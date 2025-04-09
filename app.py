@@ -11,11 +11,12 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 app = Flask(__name__)
 app.secret_key = "1234567890aeiou"
 
+uri="mongodb+srv://yesidortiz225:jLkLTfKRRCwIIkGs@cluster0.n4ffy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 app.config['MONGODB_SETTINGS'] = {
     'db': 'GestionPeliculas',
-    'host': 'localhost',
-    'port': 27017
+    'host': uri,
+   
 }
 
 #configurar recaptcha

@@ -3,8 +3,8 @@ from utils.email import enviar_correo
 from flask import render_template, request, session, redirect
 from models.usuario import Usuario
 from dotenv import load_dotenv
-import jwt
-import datetime
+import random
+import string
 import os
 import yagmail
 import threading
@@ -129,48 +129,39 @@ def listarUsuario():
 
 
 
-@app.route('/olvide', methods=['GET', 'POST'])
-def olvide_contraseña():
-    if request.method == 'GET':
-        return render_template("frmOlvide.html")
-    
-    email = request.form.get("email")  # cambia de JSON a form
-    usuario = Usuario.objects(correo=email).first()  # asegúrate de usar el campo correcto
-    if not usuario:
-        return render_template("frmOlvide.html", mensaje="Correo no encontrado")
+def generar_contraseña(n=8):
+    caracteres = string.ascii_letters + string.digits
+    return ''.join(random.choice(caracteres) for _ in range(n))
 
-    token = jwt.encode({
-        "id": str(usuario.id),
-        "exp": datetime.datetime.utcnow() + datetime.timedelta(minutes=15)
-    }, SECRET_KEY, algorithm="HS256")
-
-    link = f"http://localhost:5000/resetear/{token}"
-    mensaje = f"""<h3>Recuperación de contraseña</h3>
-                  <p>Haz clic en el siguiente enlace para restablecer tu contraseña:</p>
-                  <a href="{link}">{link}</a>"""
-    
-    enviar_correo(usuario.correo, "Recupera tu contraseña", mensaje)
-    return render_template("frmOlvide.html", mensaje="Correo de recuperación enviado")
-
-@app.route('/resetear/<token>', methods=['GET', 'POST'])
-def resetear_contraseña(token):
+@app.route("/olvide", methods=["GET","POST"])
+def recuperar():
+    mensaje = ""
     try:
-        data = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
-        user_id = data["id"]
-        usuario = Usuario.objects(id=user_id).first()
-
         if request.method == 'POST':
-            nueva = request.form.get("password")
-            usuario.update(password=nueva)
-            return render_template("frmIniciarSesion.html", mensaje="Contraseña actualizada")
+            usuario = request.form['txtusuario']
+            correo_form = request.form['txtcorreo']
 
-        return render_template("frmResetear.html", token=token)
+            # Verifica que el usuario exista
+            user = Usuario.objects(usuario=usuario, correo=correo_form).first()
+            if user:
+                nueva_pass = generar_contraseña()
+                user.password = nueva_pass  
+                user.save()
 
-    except jwt.ExpiredSignatureError:
-        return "Token expirado"
+                correo_envio = os.environ.get("EMAIL_USER")
+                clave_envio = os.environ.get("EMAIL_PASS")
+                print("EMAIL_USER:", correo_envio)
+                print("EMAIL_PASS:", clave_envio)
+                email = yagmail.SMTP(user=correo_envio, password=clave_envio)
+                asunto = "Recuperación de contraseña"
+                mensaje = f"Hola {user.nombres}, tu nueva contraseña es: {nueva_pass}"
+
+                email.send(to=user.correo, subject=asunto, contents=mensaje)
+                return render_template("frmIniciarSesion.html", mensaje="Nueva contraseña enviada al correo")
+            else:
+                mensaje = "Usuario o correo incorrecto"
     except Exception as e:
-        return "Token inválido"
+        mensaje = str(e)
+
+    return render_template("frmRecuperarContraseña.html", mensaje=mensaje)
     
-@app.route("/frmOlvide")
-def frm_olvide():
-    return render_template("frmOlvide.html")

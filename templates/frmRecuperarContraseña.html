@@ -1,0 +1,18 @@
+{% extends "index.html" %}
+{% block contenido %} 
+    <h2>Recuperar Contraseña</h2>
+
+    {% if mensaje %}
+        <p style="color: red;">{{ mensaje }}</p>
+    {% endif %}
+
+    <form method="POST" action="/olvide">
+        <input type="text" name="txtusuario" placeholder="Usuario" required>
+        <input type="email" name="txtcorreo" placeholder="Correo electrónico" required>
+        <button type="submit">Enviar enlace de recuperación</button>
+    </form>
+{% endblock %}
+
+{% block piePagina %} 
+    {% include "piePagina.html" %}
+{% endblock %}

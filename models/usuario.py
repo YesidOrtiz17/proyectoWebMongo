@@ -11,4 +11,3 @@ class Usuario(Document):
         return f"{self.nombres} {self.apellidos}"
 
 
-
