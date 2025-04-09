@@ -31,5 +31,5 @@ urllib3==2.3.0
 Werkzeug==3.1.3
 WTForms==3.2.1
 yagmail==0.15.293
-web: gunicorn app:app
 PyJWT==2.8.0
+Flask-Mail==0.9.1
