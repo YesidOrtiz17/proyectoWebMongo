@@ -2,9 +2,6 @@
 {% block contenido %} 
     <h2>Recuperar Contraseña</h2>
 
-    {% if mensaje %}
-        <p style="color: red;">{{ mensaje }}</p>
-    {% endif %}
 
     <form method="POST" action="/olvide">
         <input type="text" name="txtusuario" placeholder="Usuario" required>
