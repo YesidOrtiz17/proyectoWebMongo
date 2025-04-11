@@ -149,8 +149,8 @@ def recuperar():
                 user.save()
 
                 correo_envio = os.environ.get("EMAIL_USER")
-                clave_envio = os.environ.get("EMAIL_PASS")
-                email = yagmail.SMTP(user=correo_envio, password=clave_envio)
+                clave_envio = os.environ.get("SECRET_KEY")
+                email = yagmail.SMTP(user=correo_envio, password=clave_envio,encoding="utf-8")
                 asunto = "Recuperación de contraseña"
                 mensaje = f"Hola {user.nombres}, tu nueva contraseña es: {nueva_pass}"
 

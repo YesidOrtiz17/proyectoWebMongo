@@ -11,18 +11,17 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 app = Flask(__name__)
 app.secret_key = "1234567890aeiou"
 
-uri="mongodb+srv://yesidortiz225:jLkLTfKRRCwIIkGs@cluster0.n4ffy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 app.config['MONGODB_SETTINGS'] = {
     'db': 'GestionPeliculas',
-    'host': uri,
+    'host': os.environ.get("URI"),
    
 }
 
 #configurar recaptcha
 app.config['GOOGLE_RECAPTCHA_ENABLED'] =True
 app.config['GOOGLE_RECAPTCHA_SITE_KEY'] = os.environ.get("RECAPTCHA_SITE_KEY")  # Sustituye por tu clave pública
-app.config['GOOGLE_RECAPTCHA_SECRET_KEY'] = os.environ.get("RECAPTCHA_SECRET_KEY") # Sustituye por tu clave secreta
+#app.config['GOOGLE_RECAPTCHA_SECRET_KEY'] = os.environ.get("RECAPTCHA_SECRET_KEY") # Sustituye por tu clave secreta
 
 app.config.update(
     SESSION_COOKIE_SAMESITE="None",
