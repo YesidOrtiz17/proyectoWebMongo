@@ -18,6 +18,8 @@
                         <th>Duración</th>
                         <th>Protagonista</th>
                         <th>Género</th>
+                        <th>Resumen</th>
+                        <th>Foto</th>
                         <th>Acción</th>
                     </tr>
                 </thead>
@@ -33,15 +35,16 @@
                                 {% if g.id == p.genero.id %}
                                     <td>{{g.nombre}}</td>
                                 {%endif%}
-                            {%endfor%}                           
+                            {%endfor%} 
+                            <td>{{p.resumen}}</td>
+                            <td>{{p.foto}}</td>
                             <td class="text-center" style="font-size:3vh">
                                 <a href="/vistaEditarPelicula/{{p.id}}/">
                                     <i class="fa fa-edit text-warning" title="Editar"></i>
                                 </a>
 
                                 <i class="fa fa-trash text-danger" title="Eliminar" 
-                                onclick="deletePelicula('{{p.id}}')"></i>
-                                
+                                onclick="deletePelicula('{{p.id}}')"></i>  
                             </td>
                         </tr>
                     {%endfor%}

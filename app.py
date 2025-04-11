@@ -19,9 +19,9 @@ app.config['MONGODB_SETTINGS'] = {
 }
 
 #configurar recaptcha
-app.config['GOOGLE_RECAPTCHA_ENABLED'] =True
-app.config['GOOGLE_RECAPTCHA_SITE_KEY'] = os.environ.get("RECAPTCHA_SITE_KEY")  # Sustituye por tu clave pública
-app.config['GOOGLE_RECAPTCHA_SECRET_KEY'] = os.environ.get("RECAPTCHA_SECRET_KEY") # Sustituye por tu clave secreta
+#app.config['GOOGLE_RECAPTCHA_ENABLED'] =True
+#app.config['GOOGLE_RECAPTCHA_SITE_KEY'] = os.environ.get("RECAPTCHA_SITE_KEY")  # Sustituye por tu clave pública
+#app.config['GOOGLE_RECAPTCHA_SECRET_KEY'] = os.environ.get("RECAPTCHA_SECRET_KEY") # Sustituye por tu clave secreta
 
 app.config.update(
     SESSION_COOKIE_SAMESITE="None",

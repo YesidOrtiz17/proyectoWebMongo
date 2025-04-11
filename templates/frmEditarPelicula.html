@@ -43,6 +43,8 @@
                 <textarea name="txtResumen" id="txtResumen" cols="30" rows="3" class="form-control" 
                 required>{{pelicula.resumen}}</textarea>
             </div>
+            <label>Foto:</label>
+            <input type="file" name="foto" accept="image/*" class="form-control">
             <div>
                 <button type="button" class="btn btn-dark" 
                 onclick="editarPelicula('{{pelicula.id}}')">Editar</button>

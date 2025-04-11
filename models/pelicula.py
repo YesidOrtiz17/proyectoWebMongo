@@ -8,8 +8,8 @@ class Pelicula(Document):
     protagonista = StringField(max_length=50,required=True)
     duracion = IntField(min_value=30, max_value=200,required=True)
     resumen = StringField(required=True)
-    foto = StringField()
     genero = ReferenceField(Genero, required=True)
+    foto = StringField()
     
     def __repr__(self):
         return self.titulo

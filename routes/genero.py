@@ -66,26 +66,28 @@ def updateGenero():
 @app.route("/genero/", methods=['DELETE'])
 def deleteGenero():
     try:
-        mensaje=None
-        estado=True
-        if request.method=="DELETE":
-            datos=request.get_json(force=True)
-            genero=Genero.objects(id=datos['id']).first()
-            peliculas = Pelicula.objects()
-            if (len(peliculas)>0):
-                mensaje="No se puede eliminar. No permitido"
+        mensaje = None
+        estado = False
+        if request.method == "DELETE":
+            datos = request.get_json(force=True)
+            genero = Genero.objects(id=datos['id']).first()
+
+            if genero is None:
+                mensaje = "Género no encontrado. No se puede eliminar"
             else:
-                if genero is None:
-                    mensaje="Genero no encontrado. No se puede Eliminar"
+                peliculas = Pelicula.objects(genero=genero.id)
+
+                if len(peliculas) > 0:
+                    mensaje = "No se puede eliminar. El género tiene películas asociadas"
                 else:
                     genero.delete()
-                    estado=True
-                    mensaje="Genero Eliminado"
+                    estado = True
+                    mensaje = "Género eliminado correctamente"
         else:
-            mensaje="No permitido"  
+            mensaje = "Método no permitido"
     except Exception as error:
-        mensaje=str(error)
-        
+        mensaje = str(error)
+
     return {"estado": estado, "mensaje": mensaje}
 
 

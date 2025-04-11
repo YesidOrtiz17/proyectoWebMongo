@@ -276,3 +276,51 @@ function deletePelicula(id){
         }
     });
 }
+function editarGenero(id, nombreActual) {
+    const nuevoNombre = prompt("Editar género:", nombreActual);
+    if (nuevoNombre && nuevoNombre !== nombreActual) {
+      fetch("/genero/", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          id: id,
+          nombre: nuevoNombre
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.mensaje);
+        if (data.estado) {
+          location.reload();
+        }
+      })
+      .catch(error => {
+        console.error("Error al editar:", error);
+      });
+    }
+  }
+  
+  // Eliminar género
+  function eliminarGenero(id) {
+    if (confirm("¿Seguro que deseas eliminar este género?")) {
+      fetch("/genero/", {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ id: id })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.mensaje);
+        if (data.estado) {
+          location.reload();
+        }
+      })
+      .catch(error => {
+        console.error("Error al eliminar:", error);
+      });
+    }
+  }
